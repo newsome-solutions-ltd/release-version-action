@@ -1,0 +1,21 @@
+{
+  "name": "release-version-action",
+  "version": "0.0.1",
+  "description": "Github action CLI application for processing Git tags to determine next version increment",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "bin": {
+    "nextVersion": "./index.js"
+  },
+  "author": "Andrew Newsome",
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "13.2",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
