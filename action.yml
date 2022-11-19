@@ -1,0 +1,30 @@
+# action.yml
+name: 'Release Version Generator'
+description: 'Generates the next release version for a Git repository, given the set of existing tags and various settings'
+inputs:
+  versionScheme: 
+    description: 'The version scheme, defaults to "0.0.x"'
+    required: false
+    default: '0.0.x'
+  tagPrefix:
+    description: 'The prefix characters for each corresponding repository tag, defaults. to "v"'
+    required: false
+    default: 'v'
+  placeholderChars:
+    description: 'The placeholder char (or characters) representing the incrementing version number within the scheme, defaults to "x"'
+    required: false
+    default: 'x'
+  workingDirectory:
+    description: 'The working directory for the assessment'
+    required: false
+    default: '.'
+outputs:
+  nextVersion: 
+    description: 'The next version number based on the existing tags.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    TAG_PREFIX: ${{ inputs.tagPrefix }}
+    VERSION_SCHEME: ${{ inputs.versionScheme }}
+    PLACEHOLDER_CHARS: ${{ inputs.placeholderChars }}

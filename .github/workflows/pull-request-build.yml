@@ -1,0 +1,39 @@
+name: 'Pull request build'
+
+run-name: 'Pull request build [PR#${{ github.ref_name }}] #${{ github.run_number }}'
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/**'
+
+env:
+  NODE_VERSION: '18.12.1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - 
+        name: Checkout the branch
+        uses: actions/checkout@v3
+      - 
+        name: Setup Node
+        uses: actions/setup-node@v3
+
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - 
+        name: Install Node modules
+        run: cd app/ && npm install
+      - 
+        name: Test
+        run: cd app/ && npm test
+      -
+        name: Build
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          tags: "${{ github.repository }}:${{ github.run_number }}-latest"
