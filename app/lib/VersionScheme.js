@@ -11,6 +11,10 @@ function escapeRegExp(text) {
 
 class VersionScheme {
     constructor(scheme, placeholder) {
+        if (scheme.includes("*")) {
+            throw {'message': `Scheme [${scheme}] must not contain the asterix character`};
+        }
+
         this.scheme = scheme;
         this.placeholder = placeholder;
 
@@ -18,8 +22,9 @@ class VersionScheme {
         if (indexOfPlaceholder < 0) {
             throw {'message': `Placeholder ${placeholder} is not found within version scheme pattern ${scheme}`};
         }
-        this.searchPattern = this.scheme.substring(0, indexOfPlaceholder) + '*' + this.scheme.substring(indexOfPlaceholder + this.placeholder.length);
-        this.regex = new RegExp(escapeRegExp(this.scheme.substring(0, indexOfPlaceholder)) + "(\\d+)" + escapeRegExp(this.scheme.substring(indexOfPlaceholder + this.placeholder.length)))
+        this.prefix = this.scheme.substring(0, indexOfPlaceholder);
+        this.searchPattern = this.prefix + '*' + this.scheme.substring(indexOfPlaceholder + this.placeholder.length);
+        this.regex = new RegExp(escapeRegExp(this.prefix) + "(\\d+)" + escapeRegExp(this.scheme.substring(indexOfPlaceholder + this.placeholder.length)))
         log.debug(`Version scheme created [scheme: ${this.scheme}] [placeholder: ${this.placeholder}] [search pattern: ${this.searchPattern}] [regex: ${this.regex}]`);
     }
 
@@ -29,8 +34,13 @@ class VersionScheme {
 
     nextVersion = (previousVersions) => {
         const maxVersion = this._findMaxVersion(previousVersions);
-        const nextVersion = (maxVersion) ? maxVersion + 1 : 1;
+        const nextVersion = (maxVersion) ? maxVersion + 1 : this._initialVersion();
         return this.searchPattern.replace('*', nextVersion);
+    }
+
+    _initialVersion = () => {
+        var zeroSegmentRegex = new RegExp("(0\\.)+");
+        return (zeroSegmentRegex.test(this.prefix)) ? 1 : 0;
     }
 
     _findMaxVersion = (versionArray) => {

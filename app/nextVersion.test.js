@@ -56,11 +56,25 @@ function assertNextVersion(expectedVersion) {
 // ----------------------------------------------------------------- tests
 
 test('should calculate next version for repository without any tags', () => {
-    const repository = createGitRepository(dir);
+    createGitRepository(dir);
 
     // this runs the main index.js script, with the defaults
     run(`-d "${dir}"`);
     assertNextVersion("0.0.1");
+});
+
+test('should reject version scheme with asterix character', () => {
+    createGitRepository(dir);
+
+    run(`-s "1.*.x" -d "${dir}"`);
+    assertError();
+});
+
+test('should calculate next version where initial value is zero', () => {
+    createGitRepository(dir);
+    
+    run(`-s "1.x.0" -d "${dir}"`);
+    assertNextVersion("1.0.0");
 });
 
 test('should calculate next version for repository with simple scheme', () => {
@@ -69,7 +83,6 @@ test('should calculate next version for repository with simple scheme', () => {
     repository.stageAndCommit("Initial commit");
     repository.tag("1")
 
-    // this runs the main index.js script, with the defaults
     run(`-t "" -s "#" -p "#" -d "${dir}"`);
     assertNextVersion("2");
 });
