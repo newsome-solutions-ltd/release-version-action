@@ -3,9 +3,9 @@
 
 const fs = require('fs');
 const yargs = require("yargs");
-const GitRepository = require("./lib/GitRepository");
-const loggerFactory = require("./lib/LoggerFactory");
-const VersionScheme = require("./lib/VersionScheme");
+const GitRepository = require("./GitRepository");
+const loggerFactory = require("./LoggerFactory");
+const VersionScheme = require("./VersionScheme");
 
 const log = loggerFactory.createLogger();
 

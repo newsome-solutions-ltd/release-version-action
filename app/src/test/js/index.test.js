@@ -4,8 +4,8 @@
 
 const fs = require('fs');
 const { execSync } = require("child_process");
-const GitRepository = require("./lib/GitRepository");
-const loggerFactory = require("./lib/LoggerFactory");
+const GitRepository = require("../../main/js/GitRepository");
+const loggerFactory = require("../../main/js/LoggerFactory");
 
 // ------------------------------------------------------------- Variables 
 
@@ -46,7 +46,7 @@ beforeEach(() => {
 function run(args) {
     const output = execSync("node . " + args).toString();
     log.debug('output: ' + output);
-};
+}
 
 function assertNextVersion(expectedVersion) {
     const data = fs.readFileSync("/tmp/nextVersion").toString();
@@ -55,7 +55,7 @@ function assertNextVersion(expectedVersion) {
 
 // ----------------------------------------------------------------- tests
 
-test('should calculate next version for repository without any tags', () => {
+test('should calculate next version for repository with default values', () => {
     createGitRepository(dir);
 
     // this runs the main index.js script, with the defaults
@@ -66,8 +66,14 @@ test('should calculate next version for repository without any tags', () => {
 test('should reject version scheme with asterix character', () => {
     createGitRepository(dir);
 
-    run(`-s "1.*.x" -d "${dir}"`);
-    assertError();
+    expect(() => run(`-s "1.*.x" -d "${dir}"`)).toThrow();
+});
+
+test('should calculate next version with single number in scheme', () => {
+    createGitRepository(dir);
+
+    run(`-s "x" -d "${dir}"`);
+    assertNextVersion("1");
 });
 
 test('should calculate next version where initial value is zero', () => {

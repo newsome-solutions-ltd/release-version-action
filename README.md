@@ -15,18 +15,22 @@ For example, the pattern `"1.x.0"` represents all versions from `1.0.0`, `1.1.0`
 
 The placeholder character of `'x'` can be modified to any series of characters, for example `"VER"` or `"-??-"`.
 
-A special note about the initial version for a scheme. In an attempt to support any version scheme, the initial number replacing the placeholder character(s) will be `0` unless the characters are preceded by zero segments (`'0.'`), in which case it will be `1`. The following table attempts to clarify:
+The scheme can consist of the following characters: `alphanumeric` (A-Z,a-z,0-9) and `_-#.$:;,@`.
+
+A special note about the initial version for a scheme. In an attempt to support any valid version scheme, the initial number replacing the placeholder character(s) will be `0` unless the characters are preceded by zero segments (`'0.'`) or a non-numeric prefix or otherwise have no prefix, in which case it will be `1`. The following table attempts to clarify:
 
 | scheme  | initial version |
 | ------- | --------------- |
+| x       | 1               |
 | 0.0.x   | 0.0.1           |
 | 0.x.0   | 0.1.0           |
 | x.0.0   | 1.0.0           |
 | 1.x.0   | 1.0.0           |
-| ABC.x.0 | ABC.0.0         |
-| ABC.0.x | ABC.0.0         |
+| ABC.x.0 | ABC.1.0         |
+| ABC.0.x | ABC.0.1         |
+| ABC1.0.x | ABC1.0.0       |
+| ABC15.x | ABC15.0         |
 
-**Note**: this action rejects any scheme expression containing an asterix (`'*'`).
 
 ## How it works
 
@@ -44,7 +48,6 @@ For a version scheme with expression `1.x.0`, and where the repository has the f
 `v1.0.0`, `v1.0.1` and `v1.1.0`, then the next version would be considered to be **`1.2.0`**.
 
 If in the above scenario, a user was to add a tag which does not conform to the expected format (e.g. `v1.A.0`), then this will be ignored.
-Similarly, if a tag is added which skips the current tag numbers, but where a later segment is incremented (e.g. `v1.3.1`), then this is not considered part of the same scheme, therefore is also ignored. 
 
 ## Usage
 

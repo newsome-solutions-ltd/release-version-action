@@ -30,7 +30,7 @@ jobs:
         run: cd app/ && npm install
       - 
         name: Test
-        run: cd app/ && npm test
+        run: cd app/ && npm run checks && npm test
       -
         name: Build
         uses: docker/build-push-action@v3
