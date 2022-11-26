@@ -42,7 +42,8 @@ class VersionScheme {
     nextVersion = (previousVersions) => {
         log.info(`[Version scheme] determining next version from list of previous versions: [${previousVersions}]`);
         const maxVersion = this._findMaxVersion(previousVersions);
-        const nextVersion = (maxVersion) ? maxVersion + 1 : this.initialVersion();
+        log.debug(`[Version scheme] current max version: [${maxVersion}]`);
+        const nextVersion = (maxVersion !== undefined && maxVersion !== null) ? maxVersion + 1 : this.initialVersion();
         log.info(`[Version scheme] next incremental version is [${nextVersion}]`);
         return this.searchPattern.replace('*', nextVersion);
     }

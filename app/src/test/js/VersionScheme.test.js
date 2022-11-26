@@ -59,6 +59,7 @@ describe('VersionScheme', () => {
     ${'ABC.0.x'}        | ${'ABC.0.1,ABC.0.2'}              | ${'ABC.0.3'}    
     ${'ABC1.0.x'}       | ${'ABC1.0.0,ABC1.0.1,ABC1.0.2'}   | ${'ABC1.0.3'}
     ${'ABC15.x'}        | ${'ABC15.0,ABC15.1,ABC15.2'}      | ${'ABC15.3'}
+    ${'3.8.6-jdk17.0.5_p8-r0.x'} | ${'3.8.6-jdk17.0.5_p8-r0.0'} | ${'3.8.6-jdk17.0.5_p8-r0.1'}
     `("should determine next version", async ({ scheme, tags, nextVersion }) => {
         let s = versionScheme(scheme);
         expect(s.nextVersion(tags.split(','))).toBe(nextVersion);
