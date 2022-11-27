@@ -26,7 +26,7 @@ log.debug(greeting);
 const repo = new GitRepository(options.workdir);
 const versionScheme = new VersionScheme(schemeStr, options.placeholder);
 const tags = repo.getTags({pattern: options.tag + versionScheme.getGitSearchPattern()});
-log.debug(`Existing tags: [${tags}]`);
+log.info(`Existing tags: [${tags}]`);
 const previousVersions = tags.map(e => e.substring(options.tag.length));
 const nextVersion = versionScheme.nextVersion(previousVersions);
 log.debug(`Next version is ${nextVersion}`)
