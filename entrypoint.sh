@@ -4,16 +4,15 @@ if [ "${VERSION_SCHEMES}" != "" ]; then
 else
     versionScheme=${VERSION_SCHEME}
 fi
+if [ "${FORMAT}" != "" ]; then
+    nextVersionFile="/tmp/nextVersions.${FORMAT}"
+else
+    nextVersionFile=/tmp/nextVersions
+fi
 
 tagPrefix=${TAG_PREFIX}
 placeholderChars=${PLACEHOLDER_CHARS}
 workingDir=$(pwd)
-format=${FORMAT}
-
-nextVersionFile=/tmp/nextVersions
-if [ "${format}" != "" ]; then
-    nextVersionFile = "${nextVersionFile}.${format}"
-fi
 
 echo "Working directory is [${workingDir}], with contents:"
 ls -la ${workingDir}
@@ -25,5 +24,5 @@ node /app/src/main/js/index.js -t "${tagPrefix}" -s "${versionSchemes}" -p "${pl
 
 nextVersionValues=$(cat "${nextVersionFile}")
 
-echo "Next version is [$nextVersionValues] available at ${nextVersionFile}"
+echo "Next versions are [$nextVersionValues], read from ${nextVersionFile}"
 echo "nextVersion=$nextVersionValues" >> $GITHUB_OUTPUT
