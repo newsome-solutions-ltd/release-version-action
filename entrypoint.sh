@@ -4,10 +4,11 @@ if [ "${VERSION_SCHEMES}" != "" ]; then
 else
     versionScheme=${VERSION_SCHEME}
 fi
+nextVersionFilePlain=/tmp/nextVersions
 if [ "${FORMAT}" != "" ]; then
     nextVersionFile="/tmp/nextVersions.${FORMAT}"
 else
-    nextVersionFile=/tmp/nextVersions
+    nextVersionFile=$nextVersionFilePlain
 fi
 
 tagPrefix=${TAG_PREFIX}
@@ -26,3 +27,5 @@ nextVersionValues=$(cat "${nextVersionFile}")
 
 echo "Next versions are \"$nextVersionValues\", read from ${nextVersionFile}"
 echo "nextVersions=$nextVersionValues" >> $GITHUB_OUTPUT
+# following line maintains backwards compatability
+echo "nextVersion=$(cat $nextVersionFilePlain)" >> $GITHUB_OUTPUT
