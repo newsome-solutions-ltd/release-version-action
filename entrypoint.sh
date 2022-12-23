@@ -24,5 +24,5 @@ node /app/src/main/js/index.js -t "${tagPrefix}" -s "${versionSchemes}" -p "${pl
 
 nextVersionValues=$(cat "${nextVersionFile}")
 
-echo "Next versions are [$nextVersionValues], read from ${nextVersionFile}"
-echo "nextVersion=$nextVersionValues" >> $GITHUB_OUTPUT
+echo "Next versions are \"$nextVersionValues\", read from ${nextVersionFile}"
+echo "nextVersions=$nextVersionValues" >> $GITHUB_OUTPUT
