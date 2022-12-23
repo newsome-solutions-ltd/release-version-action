@@ -6,6 +6,10 @@ inputs:
     description: 'The version scheme, defaults to "0.0.x"'
     required: false
     default: '0.0.x'
+  versionSchemes: 
+    description: 'The multiple version schemes to calculate for, comma delimitered. Empty by default (since v3)"'
+    required: false
+    default: ''
   tagPrefix:
     description: 'The prefix characters for each corresponding repository tag, defaults. to "v"'
     required: false
@@ -18,6 +22,10 @@ inputs:
     description: 'The working directory for the assessment'
     required: false
     default: '.'
+  format:
+    description: 'The output format, defaults to plain text (if empty). Supported options are <empty> and "json"'
+    required: false
+    default: ''
 outputs:
   nextVersion: 
     description: 'The next version number based on the existing tags.'
@@ -27,4 +35,6 @@ runs:
   env:
     TAG_PREFIX: ${{ inputs.tagPrefix }}
     VERSION_SCHEME: ${{ inputs.versionScheme }}
+    VERSION_SCHEMES: ${{ inputs.versionSchemes }}
     PLACEHOLDER_CHARS: ${{ inputs.placeholderChars }}
+    FORMAT: ${{ inputs.format }}

@@ -48,9 +48,14 @@ function run(args) {
     log.debug('output: ' + output);
 }
 
-function assertNextVersion(expectedVersion) {
-    const data = fs.readFileSync("/tmp/nextVersion").toString();
-    expect(data).toBe(expectedVersion);
+function assertNextVersions(expectedVersions) {
+    const data = fs.readFileSync("/tmp/nextVersions").toString();
+    expect(data).toBe(expectedVersions);
+}
+
+function assertNextVersionsInJson(expectedVersions) {
+    const data = fs.readFileSync("/tmp/nextVersions.json").toString();
+    expect(data).toBe(expectedVersions);
 }
 
 // ----------------------------------------------------------------- tests
@@ -60,7 +65,7 @@ test('should calculate next version for repository with default values', () => {
 
     // this runs the main index.js script, with the defaults
     run(`-d "${dir}"`);
-    assertNextVersion("0.0.1");
+    assertNextVersions("0.0.1");
 });
 
 test('should reject version scheme with asterix character', () => {
@@ -73,14 +78,14 @@ test('should calculate next version with single number in scheme', () => {
     createGitRepository(dir);
 
     run(`-s "x" -d "${dir}"`);
-    assertNextVersion("1");
+    assertNextVersions("1");
 });
 
 test('should calculate next version where initial value is zero', () => {
     createGitRepository(dir);
     
     run(`-s "1.x.0" -d "${dir}"`);
-    assertNextVersion("1.0.0");
+    assertNextVersions("1.0.0");
 });
 
 test('should calculate next version for repository with simple scheme', () => {
@@ -90,7 +95,8 @@ test('should calculate next version for repository with simple scheme', () => {
     repository.tag("1")
 
     run(`-t "" -s "#" -p "#" -d "${dir}"`);
-    assertNextVersion("2");
+    assertNextVersions("2");
+    assertNextVersionsInJson("'2'");
 });
 
 test('should calculate next version for repository with multiple tags', () => {
@@ -105,7 +111,8 @@ test('should calculate next version for repository with multiple tags', () => {
 
     // this runs the main index.js script...
     run(`-t v -s 0.0.x -p x -d "${dir}"`);
-    assertNextVersion("0.0.3");
+    assertNextVersions("0.0.3");
+    assertNextVersionsInJson("'0.0.3'");
 });
 
 
@@ -121,5 +128,23 @@ test('should calculate next version for repository with custom scheme', () => {
 
     // this runs the main index.js script...
     run(`-t VER -s "abc.ABCSUF" -p ABC -d "${dir}"`);
-    assertNextVersion("abc.11SUF");
+    assertNextVersions("abc.11SUF");
+});
+
+test('should calculate next versions where multiple are specified', () => {
+    const repository = createGitRepository(dir);
+    repository.writeFile("README.md", "# initial commit");
+    repository.stageAndCommit("Initial commit");
+    repository.tag("v1.0.0");
+    repository.tag("v1.0");
+    repository.writeFile("README2.md", "# second commit");
+    repository.stageAndCommit("Second commit");
+    repository.tag("v1.1.0")
+    repository.tag("v1.1")
+    repository.tag("v1")
+
+    // this runs the main index.js script...
+    run(`-t v -s "1.x.0,1.x,1" -p x -d "${dir}"`);
+    assertNextVersions("1.2.0,1.2,1");
+    assertNextVersionsInJson("['1.2.0','1.2','1']");
 });

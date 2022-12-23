@@ -26,13 +26,20 @@ class VersionScheme {
 
         const indexOfPlaceholder = this.scheme.indexOf(placeholder);
         if (indexOfPlaceholder < 0) {
-            throw {'message': `Placeholder ${placeholder} is not found within version scheme pattern ${scheme}`};
+            this._static = true;
+            log.info(`[Version scheme] Static scheme created [scheme: ${this.scheme}]`);
+        } else {
+            this._static = false;
+            this.prefix = this.scheme.substring(0, indexOfPlaceholder);
+            this.suffix = this.scheme.substring(indexOfPlaceholder + this.placeholder.length);
+            this.searchPattern = this.prefix + '*' + this.suffix;
+            this.regex = new RegExp(`^${escapeRegExp(this.prefix)}(\\d+)${escapeRegExp(this.suffix)}$`)
+            log.info(`[Version scheme] Variable scheme created [scheme: ${this.scheme}] [placeholder: ${this.placeholder}] [search pattern: ${this.searchPattern}] [regex: ${this.regex}]`);
         }
-        this.prefix = this.scheme.substring(0, indexOfPlaceholder);
-        this.suffix = this.scheme.substring(indexOfPlaceholder + this.placeholder.length);
-        this.searchPattern = this.prefix + '*' + this.suffix;
-        this.regex = new RegExp(`^${escapeRegExp(this.prefix)}(\\d+)${escapeRegExp(this.suffix)}$`)
-        log.info(`[Version scheme] created [scheme: ${this.scheme}] [placeholder: ${this.placeholder}] [search pattern: ${this.searchPattern}] [regex: ${this.regex}]`);
+    }
+
+    isStatic = () => {
+        return this._static;
     }
 
     getGitSearchPattern = () => {
