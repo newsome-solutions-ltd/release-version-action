@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+# ====================== variables
+
+DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+
+# ====================== process
+
+cd $DIR && \
+docker build -t release-version-action:dev --target builder .
+
+docker run -it --rm -v "${DIR}:${DIR}" -w "${DIR}/app" -e GITHUB_OUTPUT=/tmp/output -u $(id -u ${USER}):$(id -g ${USER}) release-version-action:dev npm $@

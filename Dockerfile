@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine3.16
+FROM node:18.12.1-alpine3.16 AS builder
 
 ENV TAG_PREFIX='v'
 ENV VERSION_SCHEME='0.0.x'
@@ -7,6 +7,8 @@ ENV PLACEHOLDER_CHARS='x'
 # Install git
 RUN apk update && \
     apk --no-cache add git
+
+FROM builder
 
 RUN mkdir -p /app/
 
