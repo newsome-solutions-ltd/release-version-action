@@ -1,6 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "group:allNonMajor"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["node"],
+      "allowedVersions": ">=20.0.0 <21.0.0",
+      "description": "Restrict Node.js updates to versions compatible with GitHub Actions"
+    }
   ]
 }
