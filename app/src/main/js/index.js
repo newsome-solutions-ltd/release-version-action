@@ -3,19 +3,43 @@
 
 const fs = require('fs');
 const yargs = require("yargs");
+const { hideBin } = require("yargs/helpers");
 const GitRepository = require("./GitRepository");
 const loggerFactory = require("./LoggerFactory");
 const VersionScheme = require("./VersionScheme");
 
 const log = loggerFactory.createLogger();
 
-const options = yargs
- .usage("Usage: [-t <tag prefix> -s <scheme> -p <placholder> -d <workdir>]")
- .option("t", { alias: "tag", describe: "Tag prefix, defaults to 'v'", type: "string", demandOption: false, default: 'v' })
- .option("s", { alias: "scheme", describe: "Version scheme pattern, see documentation for details", type: "string", demandOption: false })
- .option("p", { alias: "placeholder", describe: "Version scheme pattern placeholder for the number to increment", type: "string", demandOption: false, default: 'x' })
- .option("d", { alias: "workdir", description: "Working directory, defaults to current dir.", demandOption: false, default: "."})
- .argv;
+const options = yargs(hideBin(process.argv))
+  .usage('Usage: [-t <tag prefix> -s <scheme> -p <placeholder> -d <workdir>]')
+  .option('t', {
+    alias: 'tag',
+    describe: "Tag prefix, defaults to 'v'",
+    type: 'string',
+    demandOption: false,
+    default: 'v'
+  })
+  .option('s', {
+    alias: 'scheme',
+    describe: 'Version scheme pattern, see documentation for details',
+    type: 'string',
+    demandOption: false
+  })
+  .option('p', {
+    alias: 'placeholder',
+    describe: 'Version scheme pattern placeholder for the number to increment',
+    type: 'string',
+    demandOption: false,
+    default: 'x'
+  })
+  .option('d', {
+    alias: 'workdir',
+    describe: 'Working directory, defaults to current dir.',
+    type: 'string',
+    demandOption: false,
+    default: '.'
+  })
+  .argv;
 
 const schemeStr = (options.scheme) ? options.scheme : `0.0.${options.placeholder}`
 
