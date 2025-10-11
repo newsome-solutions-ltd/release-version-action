@@ -37,3 +37,9 @@ jobs:
         with:
           push: false
           tags: "${{ github.repository }}:${{ github.run_number }}-latest"
+      - 
+        name: "[Test] Determine next version number"
+        id: nextVersion
+        uses: ./
+        with:
+          versionScheme: 'x'
