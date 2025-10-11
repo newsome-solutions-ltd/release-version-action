@@ -8,7 +8,7 @@ on:
 run-name: 'Master build #${{github.run_number}}'
 
 env:
-  NODE_VERSION: '18.12.1'
+  NODE_VERSION: '24.9.0'
 
 jobs:
   build:
