@@ -9,7 +9,7 @@ on:
       - 'release/**'
 
 env:
-  NODE_VERSION: '18.12.1'
+  NODE_VERSION: '24.9.0'
 
 jobs:
   build:
@@ -37,3 +37,12 @@ jobs:
         with:
           push: false
           tags: "${{ github.repository }}:${{ github.run_number }}-latest"
+      - 
+        name: "[Test] Get tags"
+        run: git fetch --tags origin
+      - 
+        name: "[Test] Determine next version number"
+        id: nextVersion
+        uses: ./
+        with:
+          versionScheme: 'x'

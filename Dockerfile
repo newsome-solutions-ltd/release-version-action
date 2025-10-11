@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine3.16 AS builder
+FROM node:24.9.0-alpine3.22 AS builder
 
 ENV TAG_PREFIX='v'
 ENV VERSION_SCHEME='0.0.x'
