@@ -18,10 +18,10 @@ jobs:
     steps:
       - 
         name: Checkout the branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - 
         name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
 
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -33,7 +33,7 @@ jobs:
         run: cd app/ && npm run checks && npm test
       -
         name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           push: false
           tags: "${{ github.repository }}:${{ github.run_number }}-latest"
