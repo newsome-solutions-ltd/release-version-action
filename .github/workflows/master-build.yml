@@ -21,13 +21,13 @@ jobs:
     steps:
       - 
         name: Checkout the branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - 
         name: Get tags
         run: git fetch --tags origin
       - 
         name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
 
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -72,7 +72,7 @@ jobs:
     steps:
       - 
         name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - 
         name: Create Release
         id: create_release
