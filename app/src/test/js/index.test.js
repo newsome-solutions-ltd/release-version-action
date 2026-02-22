@@ -29,9 +29,9 @@ function ensureDirExists(directory) {
 }
 
 function setupGitDefaults() {
-    execSync("git config init.defaultBranch main");
-    execSync("git config user.email \"test@test.com\"");
-    execSync("git config user.name \"Test User\"");
+    execSync("git config --global init.defaultBranch main");
+    execSync("git config --global user.email \"test@test.com\"");
+    execSync("git config --global user.name \"Test User\"");
 }
 
 function deleteDirectory(directory) {
