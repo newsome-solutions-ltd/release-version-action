@@ -33,7 +33,7 @@ jobs:
         run: cd app/ && npm run checks && npm test
       -
         name: Build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: false
           tags: "${{ github.repository }}:${{ github.run_number }}-latest"
